@@ -351,7 +351,7 @@ class FcmMessage
             'notification' => $this->notification->toArray(),
         ];
 
-        if (!empty($message->getTo())) {
+        if (!empty($this->getTo())) {
             $message = array_merge($message, ['to' => $this->getTo()]);
         } else {
             $message = array_merge($message, ['registration_ids' => $this->getRegistrationIds()]);
