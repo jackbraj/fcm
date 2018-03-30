@@ -35,14 +35,20 @@ class FcmChannel
         // Get the token/s from the model
         $tokens = (array) $notifiable->routeNotificationForFcm();
 
-        if (empty($tokens)) {
-            return;
-        }
-
         // Get the message from the notification class
         $message = $notification->toFcm($notifiable);
 
         if (empty($message)) {
+            return;
+        }
+
+        if (!empty($message->getTo())) {
+            // This might be a topic notification request, so process it without tokens
+            $this->sendToFcm($message);
+            return;
+        }
+
+        if (empty($tokens)) {
             return;
         }
 

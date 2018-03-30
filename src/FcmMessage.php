@@ -339,9 +339,7 @@ class FcmMessage
      */
     public function toArray()
     {
-        return [
-            'to' => $this->to,
-            'registration_ids' => $this->registrationIds,
+        $message = [
             'condition' => $this->condition,
             'collapse_key' => $this->collapseKey,
             'content_available' => $this->contentAvailable,
@@ -352,5 +350,13 @@ class FcmMessage
             'data' => $this->data,
             'notification' => $this->notification->toArray(),
         ];
+
+        if (!empty($message->getTo())) {
+            $message = array_merge($message, ['to' => $this->getTo()]);
+        } else {
+            $message = array_merge($message, ['registration_ids' => $this->getRegistrationIds()]);
+        }
+
+        return $message;
     }
 }
